@@ -1,11 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-# Импортируем библиотеку pygame
 import pygame
 from pygame import *
 from blocks import *
 from monsters import *
+from pygame.rect import Rect
 
 import helperspygame  # Преобразует tmx карты в формат  спрайтов pygame
 import tmxreader  # Может загружать tmx файлы
@@ -15,7 +12,6 @@ from player import *
 WIN_WIDTH = 800  # Ширина создаваемого окна
 WIN_HEIGHT = 600  # Высота
 DISPLAY = (WIN_WIDTH, WIN_HEIGHT)  # Группируем ширину и высоту в одну переменную
-BACKGROUND_COLOR = "#000000"
 CENTER_OF_SCREEN = WIN_WIDTH / 2, WIN_HEIGHT / 2
 
 FILE_DIR = os.path.dirname(__file__)
@@ -126,7 +122,7 @@ def main():
     renderer = helperspygame.RendererPygame()  # визуализатор
     for lvl in range(1, 4):
         loadLevel("levels/map_%s" % lvl)
-        bg.fill(Color(BACKGROUND_COLOR))  # Заливаем поверхность сплошным цветом
+        bg.fill(Color("#000000"))  # Заливаем поверхность сплошным цветом
 
         left = right = False  # по умолчанию - стоим
         up = False
