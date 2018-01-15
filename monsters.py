@@ -2,7 +2,7 @@ import os
 
 from pygame import Rect, Surface, Color, sprite
 
-import pyganim
+from pyganim import PygAnimation
 
 MONSTER_WIDTH = 32
 MONSTER_HEIGHT = 32
@@ -38,7 +38,7 @@ class Monster(sprite.Sprite):
         for anim in ANIMATION_MONSTERHORYSONTAL:
             boltAnim.append((anim, 0.3))
 
-        self.boltAnim = pyganim.PygAnimation(boltAnim)
+        self.boltAnim = PygAnimation(boltAnim)
         self.boltAnim.play()
 
     def update(self, platforms):  # по принципу героя
