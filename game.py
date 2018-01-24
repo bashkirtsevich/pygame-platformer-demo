@@ -61,10 +61,10 @@ def loadLevel(name):
 
     for row in range(0, platforms_layer.num_tiles_x):  # перебираем все координаты тайлов
         for col in range(0, platforms_layer.num_tiles_y):
-            if platforms_layer.content2D[col][row] is not None:
+            if platforms_layer.content2D[col][row]:
                 pf = Platform(row * PLATFORM_WIDTH, col * PLATFORM_WIDTH)  # как и прежде создаем объкты класса Platform
                 platforms.append(pf)
-            if dieBlocks_layer.content2D[col][row] is not None:
+            if dieBlocks_layer.content2D[col][row]:
                 bd = BlockDie(row * PLATFORM_WIDTH, col * PLATFORM_WIDTH)
                 platforms.append(bd)
 
