@@ -75,17 +75,14 @@ def loadLevel(name):
 
     teleports_layer = sprite_layers[4]
     for teleport in teleports_layer.objects:
-        try:  # если произойдет ошибка на слое телепортов
-            goX = int(teleport.properties["goX"]) * PLATFORM_WIDTH
-            goY = int(teleport.properties["goY"]) * PLATFORM_HEIGHT
-            x = teleport.x
-            y = teleport.y - PLATFORM_HEIGHT
-            tp = BlockTeleport(x, y, goX, goY)
-            entities.add(tp)
-            platforms.append(tp)
-            animatedEntities.add(tp)
-        except:  # то игра не вылетает, а просто выводит сообщение о неудаче
-            print(u"Ошибка на слое телепортов")
+        goX = int(teleport.properties["goX"]) * PLATFORM_WIDTH
+        goY = int(teleport.properties["goY"]) * PLATFORM_HEIGHT
+        x = teleport.x
+        y = teleport.y - PLATFORM_HEIGHT
+        tp = BlockTeleport(x, y, goX, goY)
+        entities.add(tp)
+        platforms.append(tp)
+        animatedEntities.add(tp)
 
     monsters_layer = sprite_layers[3]
     for monster in monsters_layer.objects:
@@ -124,74 +121,76 @@ def main():
     # будем использовать как фон
 
     renderer = helperspygame.RendererPygame()  # визуализатор
-    for lvl in range(1, 4):
-        loadLevel("levels/map_%s" % lvl)
-        bg.fill(Color("#000000"))  # Заливаем поверхность сплошным цветом
 
-        left = right = False  # по умолчанию - стоим
-        up = False
-        running = False
-        try:
-            hero = Player(playerX, playerY)  # создаем героя по (x,y) координатам
-            entities.add(hero)
-        except:
-            print(u"Не удалось на карте найти героя, взяты координаты по-умолчанию")
-            hero = Player(65, 65)
+    loadLevel("levels/map_1")
+    bg.fill(Color("#000000"))  # Заливаем поверхность сплошным цветом
+
+    left = right = up = running = False
+    try:
+        hero = Player(playerX, playerY)  # создаем героя по (x,y) координатам
         entities.add(hero)
+    except:
+        print("Не удалось на карте найти героя, взяты координаты по-умолчанию")
+        hero = Player(65, 65)
 
-        timer = pygame.time.Clock()
+    entities.add(hero)
 
-        camera = Camera(camera_configure, total_level_width, total_level_height)
+    timer = pygame.time.Clock()
 
-        while not hero.winner:  # Основной цикл программы
-            timer.tick(60)
-            for e in pygame.event.get():  # Обрабатываем события
-                if e.type == QUIT:
-                    return  # raise SystemExit, "QUIT"
-                if e.type == KEYDOWN and e.key == K_UP:
+    camera = Camera(camera_configure, total_level_width, total_level_height)
+
+    while not hero.winner:  # Основной цикл программы
+        timer.tick(60)
+        for e in pygame.event.get():  # Обрабатываем события
+            if e.type == QUIT:
+                return
+
+            if e.type == KEYDOWN:
+                if e.key == K_UP:
                     up = True
-                if e.type == KEYDOWN and e.key == K_LEFT:
+                if e.key == K_LEFT:
                     left = True
-                if e.type == KEYDOWN and e.key == K_RIGHT:
+                if e.key == K_RIGHT:
                     right = True
-                if e.type == KEYDOWN and e.key == K_LSHIFT:
+                if e.key == K_LSHIFT:
                     running = True
-
-                if e.type == KEYUP and e.key == K_UP:
+            elif e.type == KEYUP:
+                if e.key == K_UP:
                     up = False
-                if e.type == KEYUP and e.key == K_RIGHT:
-                    right = False
-                if e.type == KEYUP and e.key == K_LEFT:
+                if e.key == K_LEFT:
                     left = False
-                if e.type == KEYUP and e.key == K_LSHIFT:
+                if e.key == K_RIGHT:
+                    right = False
+                if e.key == K_LSHIFT:
                     running = False
-            for sprite_layer in sprite_layers:  # перебираем все слои
-                if not sprite_layer.is_object_group:  # и если это не слой объектов
-                    renderer.render_layer(screen, sprite_layer)  # отображаем его
 
-            for e in entities:
-                screen.blit(e.image, camera.apply(e))
-            animatedEntities.update()  # показываеaм анимацию
-            monsters.update(platforms)  # передвигаем всех монстров
-            camera.update(hero)  # центризируем камеру относительно персонаж
-            center_offset = camera.reverse(CENTER_OF_SCREEN)  # получаем координаты внутри длинного уровня
-            renderer.set_camera_position_and_size(center_offset[0], center_offset[1], \
-                                                  WIN_WIDTH, WIN_HEIGHT, "center")
-            hero.update(left, right, up, running, platforms)  # передвижение
-            pygame.display.update()  # обновление и вывод всех изменений на экран
-            screen.blit(bg, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
-        for sprite_layer in sprite_layers:
-            if not sprite_layer.is_object_group:
-                renderer.render_layer(screen, sprite_layer)
-        # когда заканчиваем уровень
+        for sprite_layer in sprite_layers:  # перебираем все слои
+            if not sprite_layer.is_object_group:  # и если это не слой объектов
+                renderer.render_layer(screen, sprite_layer)  # отображаем его
+
         for e in entities:
-            screen.blit(e.image, camera.apply(e))  # еще раз все перерисовываем
-        font = pygame.font.Font(None, 38)
-        text = font.render(("Thank you MarioBoy! but our princess is in another level!"), 1,
-                           (255, 255, 255))  # выводим надпись
-        screen.blit(text, (10, 100))
-        pygame.display.update()
-        time.wait(10000)  # ждем 10 секунд и после - переходим на следующий уровень
+            screen.blit(e.image, camera.apply(e))
+        animatedEntities.update()  # показываеaм анимацию
+        monsters.update(platforms)  # передвигаем всех монстров
+        camera.update(hero)  # центризируем камеру относительно персонаж
+        center_offset = camera.reverse(CENTER_OF_SCREEN)  # получаем координаты внутри длинного уровня
+        renderer.set_camera_position_and_size(center_offset[0], center_offset[1], \
+                                              WIN_WIDTH, WIN_HEIGHT, "center")
+        hero.update(left, right, up, running, platforms)  # передвижение
+        pygame.display.update()  # обновление и вывод всех изменений на экран
+        screen.blit(bg, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
+    for sprite_layer in sprite_layers:
+        if not sprite_layer.is_object_group:
+            renderer.render_layer(screen, sprite_layer)
+    # когда заканчиваем уровень
+    for e in entities:
+        screen.blit(e.image, camera.apply(e))  # еще раз все перерисовываем
+    font = pygame.font.Font(None, 38)
+    text = font.render(("Thank you MarioBoy! but our princess is in another level!"), 1,
+                       (255, 255, 255))  # выводим надпись
+    screen.blit(text, (10, 100))
+    pygame.display.update()
+    time.wait(10000)  # ждем 10 секунд и после - переходим на следующий уровень
 
 
 level = []
