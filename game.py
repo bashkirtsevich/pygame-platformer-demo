@@ -111,12 +111,10 @@ def loadLevel(name):
 
 
 def main():
-    pygame.init()  # Инициация PyGame, обязательная строчка
-    screen = pygame.display.set_mode(DISPLAY)  # Создаем окошко
-    pygame.display.set_caption("Super Mario Boy")  # Пишем в шапку
-    bg = Surface((WIN_WIDTH, WIN_HEIGHT))  # Создание видимой поверхности
-    # будем использовать как фон
-
+    pygame.init()
+    screen = pygame.display.set_mode(DISPLAY)
+    pygame.display.set_caption("Super Mario Boy")
+    bg = Surface((WIN_WIDTH, WIN_HEIGHT))
     renderer = helperspygame.RendererPygame()  # визуализатор
 
     playerX, playerY, total_level_height, total_level_width, sprite_layers = loadLevel("levels/map_1")
@@ -127,12 +125,11 @@ def main():
     entities.add(hero)
 
     timer = pygame.time.Clock()
-
     camera = Camera(camera_configure, total_level_width, total_level_height)
 
-    while not hero.winner:  # Основной цикл программы
+    while not hero.winner:
         timer.tick(60)
-        for e in pygame.event.get():  # Обрабатываем события
+        for e in pygame.event.get():
             if e.type == QUIT:
                 return
             elif e.type == KEYDOWN:
@@ -160,6 +157,7 @@ def main():
 
         for e in entities:
             screen.blit(e.image, camera.apply(e))
+
         animatedEntities.update()  # показываеaм анимацию
         monsters.update(platforms)  # передвигаем всех монстров
         camera.update(hero)  # центризируем камеру относительно персонаж
@@ -169,12 +167,13 @@ def main():
         hero.update(left, right, up, running, platforms)  # передвижение
         pygame.display.update()  # обновление и вывод всех изменений на экран
         screen.blit(bg, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
+
     for sprite_layer in sprite_layers:
         if not sprite_layer.is_object_group:
             renderer.render_layer(screen, sprite_layer)
-    # когда заканчиваем уровень
+
     for e in entities:
-        screen.blit(e.image, camera.apply(e))  # еще раз все перерисовываем
+        screen.blit(e.image, camera.apply(e))
 
     font = pygame.font.Font(None, 38)
     text = font.render(("Thank you MarioBoy! but our princess is in another level!"), 1,
