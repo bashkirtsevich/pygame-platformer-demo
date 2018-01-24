@@ -250,8 +250,7 @@ class SpriteLayer(object):
             self.content2D[ypos] = [None] * self.num_tiles_x
 
         # fill them
-        _img_cache = {}
-        _img_cache["hits"] = 0
+        _img_cache = {"hits": 0}
         for ypos_new in range(0, self.num_tiles_y):
             for xpos_new in range(0, self.num_tiles_x):
                 coords = self._get_list_of_neighbour_coord(xpos_new, ypos_new, \
@@ -269,10 +268,6 @@ class SpriteLayer(object):
 
                     self.content2D[ypos_new][xpos_new] = sprite
         self.bottom_margin = self._bottom_margin
-        if __debug__:
-            print('%s: Sprite Cache hits: %d' % \
-                  (self.__class__.__name__, _img_cache["hits"]))
-        del _img_cache
 
     def get_collapse_level(self):
         """
@@ -495,9 +490,6 @@ class SpriteLayer(object):
 
         # HACK:
         new_layer._level = layer._level * 2
-
-        if __debug__ and level > 1:
-            print('%s: Sprite Cache hits: %d' % ("collapse", _img_cache["hits"]))
         return new_layer
 
     @staticmethod
