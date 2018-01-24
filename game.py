@@ -44,9 +44,6 @@ def camera_configure(camera, target_rect):
 
 
 def loadLevel(name):
-    global playerX, playerY  # объявляем глобальные переменные, это координаты героя
-    global total_level_height, total_level_width
-    global sprite_layers  # все слои карты
     world_map = tmxreader.TileMapParser().parse_decode('%s/%s.tmx' % (FILE_DIR, name))  # загружаем карту
     resources = helperspygame.ResourceLoaderPygame()  # инициируем преобразователь карты
     resources.load(world_map)  # и преобразуем карту в понятный pygame формат
@@ -82,6 +79,9 @@ def loadLevel(name):
         platforms.append(tp)
         animatedEntities.add(tp)
 
+    playerX = 65
+    playerY = 65
+
     monsters_layer = sprite_layers[3]
     for monster in monsters_layer.objects:
         try:
@@ -110,6 +110,8 @@ def loadLevel(name):
     total_level_width = platforms_layer.num_tiles_x * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
     total_level_height = platforms_layer.num_tiles_y * PLATFORM_HEIGHT  # высоту
 
+    return playerX, playerY, total_level_height, total_level_width, sprite_layers
+
 
 def main():
     pygame.init()  # Инициация PyGame, обязательная строчка
@@ -120,7 +122,7 @@ def main():
 
     renderer = helperspygame.RendererPygame()  # визуализатор
 
-    loadLevel("levels/map_1")
+    playerX, playerY, total_level_height, total_level_width, sprite_layers = loadLevel("levels/map_1")
     bg.fill(Color("#000000"))  # Заливаем поверхность сплошным цветом
 
     left = right = up = running = False
