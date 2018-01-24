@@ -175,17 +175,20 @@ def main():
     # когда заканчиваем уровень
     for e in entities:
         screen.blit(e.image, camera.apply(e))  # еще раз все перерисовываем
+
     font = pygame.font.Font(None, 38)
     text = font.render(("Thank you MarioBoy! but our princess is in another level!"), 1,
                        (255, 255, 255))  # выводим надпись
     screen.blit(text, (10, 100))
+
     pygame.display.update()
 
 
 level = []
-entities = pygame.sprite.Group()  # Все объекты
-animatedEntities = pygame.sprite.Group()  # все анимированные объекты, за исключением героя
-monsters = pygame.sprite.Group()  # Все передвигающиеся объекты
-platforms = []  # то, во что мы будем врезаться или опираться
+entities = pygame.sprite.Group()
+animatedEntities = pygame.sprite.Group()
+monsters = pygame.sprite.Group()
+platforms = []
+
 if __name__ == "__main__":
     main()
