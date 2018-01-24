@@ -126,13 +126,7 @@ def main():
     bg.fill(Color("#000000"))  # Заливаем поверхность сплошным цветом
 
     left = right = up = running = False
-    try:
-        hero = Player(playerX, playerY)  # создаем героя по (x,y) координатам
-        entities.add(hero)
-    except:
-        print("Не удалось на карте найти героя, взяты координаты по-умолчанию")
-        hero = Player(65, 65)
-
+    hero = Player(playerX, playerY)  # создаем героя по (x,y) координатам
     entities.add(hero)
 
     timer = pygame.time.Clock()
