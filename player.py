@@ -141,13 +141,11 @@ class Player(sprite.Sprite):
             self.yvel += GRAVITY
 
         if abs(round(self.yvel)) > 2:
-            # print("В воздухе")
             self.isFly = True
         elif self.onGround:
-            # print "Стоит"
             self.isFly = False
 
-        self.onGround = False;  # Мы не знаем, когда мы на земле((
+        self.onGround = False
         self.rect.y += self.yvel
         self.collide(0, self.yvel, platforms)
 
