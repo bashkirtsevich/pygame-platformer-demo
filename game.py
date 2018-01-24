@@ -167,8 +167,8 @@ def main():
         monsters.update(platforms)  # передвигаем всех монстров
         camera.update(hero)  # центризируем камеру относительно персонаж
         center_offset = camera.reverse(CENTER_OF_SCREEN)  # получаем координаты внутри длинного уровня
-        renderer.set_camera_position_and_size(center_offset[0], center_offset[1], \
-                                              WIN_WIDTH, WIN_HEIGHT, "center")
+        renderer.set_camera_position_and_size(
+            center_offset[0], center_offset[1], WIN_WIDTH, WIN_HEIGHT, "center")
         hero.update(left, right, up, running, platforms)  # передвижение
         pygame.display.update()  # обновление и вывод всех изменений на экран
         screen.blit(bg, (0, 0))  # Каждую итерацию необходимо всё перерисовывать
