@@ -144,8 +144,7 @@ def main():
         for e in pygame.event.get():  # Обрабатываем события
             if e.type == QUIT:
                 return
-
-            if e.type == KEYDOWN:
+            elif e.type == KEYDOWN:
                 if e.key == K_UP:
                     up = True
                 if e.key == K_LEFT:
