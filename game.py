@@ -84,28 +84,25 @@ def loadLevel(name):
 
     monsters_layer = sprite_layers[3]
     for monster in monsters_layer.objects:
-        try:
-            x = monster.x
-            y = monster.y
-            if monster.name == "Player":
-                playerX = x
-                playerY = y - PLATFORM_HEIGHT
-            elif monster.name == "Princess":
-                pr = Princess(x, y - PLATFORM_HEIGHT)
-                platforms.append(pr)
-                entities.add(pr)
-                animatedEntities.add(pr)
-            else:
-                up = int(monster.properties["up"])
-                maxUp = int(monster.properties["maxUp"])
-                left = int(monster.properties["left"])
-                maxLeft = int(monster.properties["maxLeft"])
-                mn = Monster(x, y - PLATFORM_HEIGHT, left, up, maxLeft, maxUp)
-                entities.add(mn)
-                platforms.append(mn)
-                monsters.add(mn)
-        except:
-            print(u"Ошибка на слое монстров")
+        x = monster.x
+        y = monster.y
+        if monster.name == "Player":
+            playerX = x
+            playerY = y - PLATFORM_HEIGHT
+        elif monster.name == "Princess":
+            pr = Princess(x, y - PLATFORM_HEIGHT)
+            platforms.append(pr)
+            entities.add(pr)
+            animatedEntities.add(pr)
+        else:
+            up = int(monster.properties["up"])
+            maxUp = int(monster.properties["maxUp"])
+            left = int(monster.properties["left"])
+            maxLeft = int(monster.properties["maxLeft"])
+            mn = Monster(x, y - PLATFORM_HEIGHT, left, up, maxLeft, maxUp)
+            entities.add(mn)
+            platforms.append(mn)
+            monsters.add(mn)
 
     total_level_width = platforms_layer.num_tiles_x * PLATFORM_WIDTH  # Высчитываем фактическую ширину уровня
     total_level_height = platforms_layer.num_tiles_y * PLATFORM_HEIGHT  # высоту
